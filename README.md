@@ -28,6 +28,12 @@ require("todo.nvim").setup({
 })
 ```
 
+Use :Todo weekly to open weekly calendar
+
+If the specified directory exists, it creates a markdown file for that week
+
+Use q to quit and H, L to switch to the previous/next week
+
 ## Commands
 
 ```
