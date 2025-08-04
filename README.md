@@ -28,6 +28,12 @@ require("todo.nvim").setup({
 })
 ```
 
+## Commands
+
+```
+:Todo weekly
+```
+
 ## Example installation with Lazy
 
 ```lua
