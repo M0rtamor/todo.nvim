@@ -29,6 +29,7 @@ M.get_buffer_from_file = function(path)
 	end
 
 	vim.bo[buf].swapfile = false
+	vim.bo[buf].bufhidden = "wipe"
 
 	return buf
 end
@@ -100,6 +101,14 @@ M.shift_week = function(week, year, shift)
 	end
 
 	return week, year
+end
+
+M.save_buffer = function(buffer)
+	if vim.api.nvim_get_option_value("modified", { buf = buffer }) then
+		vim.api.nvim_buf_call(buffer, function()
+			vim.cmd("write")
+		end)
+	end
 end
 
 return M
