@@ -19,7 +19,8 @@ local function get_weekly_filename(week, year)
 	-- local sunday_string = os.date("%d.%m", iso_sunday)
 	--
 	-- return monday_string .. "-" .. sunday_string .. ".md"
-	if tonumber(week) < 10 then
+	week = tonumber(week)
+	if week < 10 then
 		return tostring(year) .. "-W0" .. tostring(week) .. ".md"
 	end
 
