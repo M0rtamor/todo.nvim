@@ -82,7 +82,7 @@ local function init_weekly_file(week, year, weekly_todo_path)
 		table.insert(date_strings, os.date("%d.%m", iso_monday + (i-1)*DAY_IN_SECONDS))
 	end
 
-	local header = "# To Do Liste " .. date_strings[1] .. "-" .. date_strings[7]
+	local header = "# To Do Liste " .. date_strings[1] .. "-" .. date_strings[7] .. " KW" .. week
 
 	table.insert(lines, header)
 	table.insert(lines, "")
