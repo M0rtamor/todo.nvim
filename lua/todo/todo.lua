@@ -11,6 +11,8 @@ local opened_week = 0
 local opened_year = 0
 local switch_week
 
+-- @param week - string
+-- @param year - string
 local function get_weekly_filename(week, year)
 	-- local iso_monday, iso_sunday = utils.get_iso_dates_of_week(week, year)
 	-- local monday_string = os.date("%d.%m", iso_monday)
@@ -24,7 +26,9 @@ local function get_weekly_filename(week, year)
 	return tostring(year) .. "-W" .. tostring(week) .. ".md"
 end
 
-
+-- @param week - string
+-- @param year - string
+-- @param opts - table
 local function get_weekly_path(week, year, opts)
 	local expanded_path = utils.expand_path(opts.dirs.weekly)
 	local weekly_filename = get_weekly_filename(week, year)
@@ -32,6 +36,11 @@ local function get_weekly_path(week, year, opts)
 	return expanded_path .. "/" .. weekly_filename
 end
 
+-- @param buffer - Buffer id
+-- @param mode - string
+-- @param keymap - string
+-- @param callback_func - function
+-- @param param any
 local function set_keymap(buffer, mode, keymap, callback_func, param)
 	vim.api.nvim_buf_set_keymap(buffer, mode, keymap, "", {
 		noremap = true,
@@ -42,6 +51,8 @@ local function set_keymap(buffer, mode, keymap, callback_func, param)
 	})
 end
 
+-- @param todo_buf - Buffer id
+-- @param opts - table
 local function set_todo_window_keymaps(todo_buf, opts)
 	local function close_window(_)
 		utils.save_buffer(todo_buf)
@@ -58,6 +69,9 @@ local function set_todo_window_keymaps(todo_buf, opts)
 	set_keymap(todo_buf, "n", "L", switch_window, 1)
 end
 
+-- @param week - string
+-- @param year - string
+-- @param weekly_todo_path - string
 local function init_weekly_file(week, year, weekly_todo_path)
 	local iso_monday, _ = utils.get_iso_dates_of_week(week, year)
 
@@ -81,6 +95,11 @@ local function init_weekly_file(week, year, weekly_todo_path)
 	vim.fn.writefile(lines, weekly_todo_path)
 end
 
+-- @param weekly_buf - Buffer id
+-- @param window - window-ID
+-- @param week - string
+-- @param year - string
+-- @param opts - table
 local function open_week_in_window(weekly_buf, window, week, year, opts)
 	local weekly_todo_path = get_weekly_path(week, year, opts)
 
@@ -99,6 +118,8 @@ local function open_week_in_window(weekly_buf, window, week, year, opts)
 	return weekly_buf, window
 end
 
+-- @param relative - integer
+-- @param opts - table
 switch_week = function(relative, opts)
 	opened_week, opened_year = utils.shift_week(opened_week, opened_year, relative)
 
@@ -107,11 +128,15 @@ switch_week = function(relative, opts)
 	set_todo_window_keymaps(buf, opts)
 end
 
+-- @param week string
+-- @param year string
+-- @param opts table
 M.open_weekly = function(week, year, opts)
 	if win ~= nil and vim.api.nvim_win_is_valid(win) then
 		vim.api.nvim_set_current_win(win)
 		return
 	end
+
 	if not utils.dir_exists(opts.dirs.weekly) then
 		print("Todo directory does no exist at " .. opts.dirs.weekly)
 		return

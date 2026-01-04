@@ -23,6 +23,7 @@ local default_opts = {
 	},
 }
 
+-- @param opts - table
 local function setup_user_commands(opts)
 	vim.api.nvim_create_user_command("Todo", function(arg)
 		if arg.fargs[1] == "weekly" then
@@ -33,6 +34,7 @@ local function setup_user_commands(opts)
 	end, { nargs = 1, })
 end
 
+-- @param opts - table
 M.setup = function(opts)
 	opts = vim.tbl_deep_extend("force", default_opts, opts)
 	setup_user_commands(opts)
